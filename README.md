@@ -1,44 +1,66 @@
 # Ember-better-popup
 
-This addon was created to simplified popups routing code.
-Usually we need to write something similar to
+This addon was created to render popups/modals/dialogs in global context/template with less boilerplate code.
+
+# Usage
+
+Put main component somewhere in template
 
 ```
-Ember.Component.extend({
-  showPopup: false,
-  actions: {
-     showPopup(){
-        this.set('showPopup', true);
-     },
-     hidePopup(){
-        this.set('showPopup', false);
-     }
-  }
-});
-```
-and template
-```
-{{#if showPopup}}
-  {{popup-component some=data onClose=(action "hidePopup")}}
-{{/#if}}
-```
-Also problem that this code will be rendered inside the components tree and some styles can be affected(broken).
-
-When using *ember-better-popup* code will be much simplier
-include placeholder component somewhere in template
-```
+//application.hbs
 {{better-popup}}
 ```
 
-then just call service method and popup will rendered to placeholder component 
+then call service method 
 
 ```
+//component.js
 Ember.Component.extend({
   betterPopup: Ember.inject.service(),
   actions: {
      showPopup(){
         this.get('betterPopup').show('component.name', { some: model});
      }
+  }
+});
+```
+
+popup will rendered inside main component
+
+Also we can pass `opener` param and communicate between opener component and popup;
+
+```
+//component.js
+Ember.Component.extend({
+  betterPopup: Ember.inject.service(),
+  actions: {
+     showPopup(){
+        this.get('betterPopup').show('component.name', { some: model}, this);
+     }
+  },
+  someAction(){
+    //...
+  }
+});
+```
+
+```
+//popup.js
+Ember.Component.extend({
+  someFunc(){
+    var result = this.sendOpener('someAction', params);
+    //do something with result
+  }
+});
+```
+
+When popup is not needed any more we should call `onClose`
+
+```
+//popup.js
+Ember.Component.extend({
+  allDone(){
+    this.onClose();
   }
 });
 ```
