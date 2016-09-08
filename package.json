@@ -1,7 +1,7 @@
 {
   "name": "ember-better-popup",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "Ember addon which simplifies working with popups",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -40,7 +40,10 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "popup",
+    "dialog",
+    "modal"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6"

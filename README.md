@@ -1,26 +1,48 @@
 # Ember-better-popup
 
-This README outlines the details of collaborating on this Ember addon.
+This addon was created to simplified popups routing code.
+Usually we need to write something similar to
+
+```
+Ember.Component.extend({
+  showPopup: false,
+  actions: {
+     showPopup(){
+        this.set('showPopup', true);
+     },
+     hidePopup(){
+        this.set('showPopup', false);
+     }
+  }
+});
+```
+and template
+```
+{{#if showPopup}}
+  {{popup-component some=data onClose=(action "hidePopup")}}
+{{/#if}}
+```
+Also problem that this code will be rendered inside the components tree and some styles can be affected(broken).
+
+When using *ember-better-popup* code will be much simplier
+include placeholder component somewhere in template
+```
+{{better-popup}}
+```
+
+then just call service method and popup will rendered to placeholder component 
+
+```
+Ember.Component.extend({
+  betterPopup: Ember.inject.service(),
+  actions: {
+     showPopup(){
+        this.get('betterPopup').show('component.name', { some: model});
+     }
+  }
+});
+```
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
-
-## Running
-
-* `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+* `ember install ember-better-popup`
